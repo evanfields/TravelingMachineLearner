@@ -1,0 +1,4 @@
+name = "TravelingMachineLearner"
+uuid = "964077d6-20f1-42a1-ae8f-77687cda3046"
+authors = ["Evan Fields <evanjeromefields@gmail.com>"]
+version = "0.1.0"
