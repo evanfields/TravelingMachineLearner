@@ -1,5 +1,6 @@
 module TravelingMachineLearner
+const TSP_SIZE = 10
 
-greet() = print("Hello World!")
+include("solve_tsp.jl")
 
 end # module TravelingMachineLearner
