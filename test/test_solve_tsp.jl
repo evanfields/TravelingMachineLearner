@@ -47,6 +47,7 @@ end
     for triangle_cut_thresh in [0, 1.5] 
         tour = TML.solve_tsp(distmat; triangle_cut_thresh)
         @test length(tour) == 7  # Closed tour
+        @test tour[1] == tour[end] == 1 # Start and end at city 1
         @test Set(tour) == Set(1:6)  # All cities visited
     end
 end

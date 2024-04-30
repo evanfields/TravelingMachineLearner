@@ -101,6 +101,25 @@ function _setup_jump_model(
 	return m, x
 end
 
+"""
+"Rotate" a closed circuit so that it starts (and ends) at `desired_start`. E.g.
+`rotate_circuit([1,2,3,1], 2) == [2,3,1,2]`. `circuit` must be a closed path.
+"""
+function _rotate_path(circuit, desired_start)
+    if first(circuit) != last(circuit)
+        throw(DomainError(circuit, "Circuit passed to rotate_circuit is not closed."))
+    end
+    first(circuit) == desired_start && return copy(circuit)
+    start_ind = findfirst(circuit .== desired_start)
+    return vcat(
+        circuit[start_ind:end],
+        circuit[2:start_ind]
+    )
+end
+
+"""Solve a TSP specified by a distance matrix. Return a closed list of integer indices
+representing an optimal path starting at index 1. The returned list will also end with
+index 1."""
 function solve_tsp(
 	distmat;
 	log_level = Logging.Debug,
@@ -128,5 +147,5 @@ function solve_tsp(
     end
     path = _extract_tour(_jump_to_bool(arc_variables))
     push!(path, path[1]) # close the tour
-    return path
+    return _rotate_path(path, 1)
 end
