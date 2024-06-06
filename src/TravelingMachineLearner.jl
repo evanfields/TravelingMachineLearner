@@ -163,4 +163,18 @@ function train_model(;
 end
 
 
+function score_model(
+    model,
+    input_size = TSP_SIZE;
+    tsps = [generate_unit_square_tsp(input_size) for _ in 1:100],
+)
+    return map(tsps) do tsp
+        path_model = model_to_path(tsp.distmat, model)
+        path_opt = solve_tsp(tsp.distmat)
+        cost_model = sum(tsp.distmat[path_model[i], path_model[i+1]] for i in 1:input_size)
+        cost_opt = sum(tsp.distmat[path_opt[i], path_opt[i+1]] for i in 1:input_size)
+        return cost_model / cost_opt
+    end
+end
+
 end # module TravelingMachineLearner

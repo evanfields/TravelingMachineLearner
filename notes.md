@@ -41,3 +41,15 @@ end
 * Swapping relu for gelu seems to help a bunch with train loss, down to like .14, presumably some performance penalty?
 * Generating 40k rather than 30k training examples and adding another 80=>80 layer in the middle maybe gets train 
 loss down to ~.12, which is modest but helpful?
+* This guy with 60k training examples and 1500 epochs has a median model/opt ratio of 1.03, which feels pretty good
+```
+Flux.Chain(
+    Flux.Dense(input_size, 200, Flux.gelu),
+    Flux.Dense(200, 80, Flux.gelu),
+    Flux.Dense(80, 80, Flux.gelu),
+    Flux.Dense(80, 35, Flux.gelu),
+    Flux.Dense(35, output_size, identity),
+    # logitcrossentropy loss, no softmax
+)
+```
+I'm not sure if the middle 80 => 80 layer is actually helpful or not
